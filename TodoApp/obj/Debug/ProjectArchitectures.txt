@@ -1,0 +1,1 @@
+C:\Data\Projects\Phone\TodoApp\TodoApp\TodoApp.csproj;neutral
