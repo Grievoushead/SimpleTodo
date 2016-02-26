@@ -16,9 +16,9 @@ namespace MyChecklists.ViewModels
 
         private DatabaseHelperClass db = new DatabaseHelperClass();
 
-        public ObservableCollection<TodoList> Lists { get; private set; }
+        public ObservableCollection<TodoListVM> Lists { get; private set; }
 
-        public TodoList CurrentList { get; set; }
+        public TodoListVM CurrentList { get; set; }
 
         public RelayCommand Clean { get; private set; }
 
@@ -31,17 +31,17 @@ namespace MyChecklists.ViewModels
             /*_NavService = new NavService();
             _NavService.Register("Add", typeof(AddView));*/
 
-            var listsModel = new List<TodoList>();
+            var listsModel = new List<TodoListVM>();
             var lists = db.GetLists();
             foreach (var list in lists)
             {
                 var todos = db.GetTodos(list.Id);
-                var listModel = new TodoList(list.Title, todos.Select(x=>new TodoItem(x.Title, x.Checked, x.Id)));
+                var listModel = new TodoListVM(list.Title, todos.Select(x=>new TodoItemVM(x.Title, x.Checked, x.Id)));
                 listModel.Id = list.Id;
                 listsModel.Add(listModel);
             }
 
-            this.Lists = new ObservableCollection<TodoList>(listsModel);
+            this.Lists = new ObservableCollection<TodoListVM>(listsModel);
             /*{
                 new TodoList("Home", new List<TodoItem> {new TodoItem("Buy milk"), new TodoItem("Clean"), new TodoItem("Wash")}),
                 new TodoList("Work", new List<TodoItem> {new TodoItem("Create presentation"), new TodoItem("Learn React"), new TodoItem("Write code")}),

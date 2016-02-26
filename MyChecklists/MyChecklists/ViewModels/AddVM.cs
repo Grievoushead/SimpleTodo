@@ -11,9 +11,9 @@ namespace MyChecklists.ViewModels
     {
         private DatabaseHelperClass db = new DatabaseHelperClass();
 
-        private readonly ObservableCollection<TodoList> lists;
+        private readonly ObservableCollection<TodoListVM> lists;
 
-        private readonly TodoList currentList;
+        private readonly TodoListVM currentList;
 
         public String Title { get; set; }
 
@@ -23,7 +23,7 @@ namespace MyChecklists.ViewModels
 
         public AddVM() { }
 
-        public AddVM(TodoList currentList, ObservableCollection<TodoList> lists)
+        public AddVM(TodoListVM currentList, ObservableCollection<TodoListVM> lists)
         {
             this.currentList = currentList;
             this.lists = lists;
@@ -38,7 +38,7 @@ namespace MyChecklists.ViewModels
                         Title = this.Title
                     };
 
-                    var listModel = new TodoList(this.Title, new List<TodoItem>());
+                    var listModel = new TodoListVM(this.Title, new List<TodoItemVM>());
                     listModel.Id = listDto.Id;
 
                     db.InsertList(listDto);
@@ -56,7 +56,7 @@ namespace MyChecklists.ViewModels
                         TodoListId = currentList.Id
                     };
 
-                    var itemModel = new TodoItem(this.Title, false, itemDto.Id);
+                    var itemModel = new TodoItemVM(this.Title, false, itemDto.Id);
                     itemModel.Id = itemDto.Id;
 
                     db.InsertItem(itemDto);

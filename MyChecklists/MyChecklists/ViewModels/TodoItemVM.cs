@@ -5,7 +5,7 @@ using MyChecklists.Infra;
 
 namespace MyChecklists.ViewModels
 {
-    public class TodoItem
+    public class TodoItemVM
     {
         private DatabaseHelperClass db = new DatabaseHelperClass();
 
@@ -17,7 +17,7 @@ namespace MyChecklists.ViewModels
 
         public RelayCommand Toggle { get; private set; }
 
-        public TodoItem(String title, Boolean check, String id)
+        public TodoItemVM(String title, Boolean check, String id)
         {
             this.Id = id;
             this.Title = title;

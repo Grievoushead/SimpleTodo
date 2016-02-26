@@ -21,6 +21,8 @@ using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону "Приложение с Pivot" см. по адресу http://go.microsoft.com/fwlink/?LinkID=391641
 using MyChecklists.Dtos;
+using MyChecklists.Infra;
+using MyChecklists.Views;
 using SQLite;
 
 namespace MyChecklists

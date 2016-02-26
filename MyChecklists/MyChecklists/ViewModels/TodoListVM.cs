@@ -4,7 +4,7 @@ using MyChecklists.Infra;
 
 namespace MyChecklists.ViewModels
 {
-    public class TodoList
+    public class TodoListVM
     {
         private DatabaseHelperClass db = new DatabaseHelperClass();
 
@@ -12,7 +12,7 @@ namespace MyChecklists.ViewModels
 
         public string Title { get; private set; }
 
-        public ObservableCollection<TodoItem> Todos { get; private set; }
+        public ObservableCollection<TodoItemVM> Todos { get; private set; }
 
         public void Clean()
         {
@@ -27,10 +27,10 @@ namespace MyChecklists.ViewModels
             }
         }
 
-        public TodoList(string title, IEnumerable<TodoItem> todos)
+        public TodoListVM(string title, IEnumerable<TodoItemVM> todos)
         {
             this.Title = title;
-            this.Todos = new ObservableCollection<TodoItem>(todos);
+            this.Todos = new ObservableCollection<TodoItemVM>(todos);
         }
     }
 }
