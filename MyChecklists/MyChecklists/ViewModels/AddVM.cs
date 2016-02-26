@@ -27,11 +27,11 @@ namespace MyChecklists.ViewModels
         {
             this.currentList = currentList;
             this.lists = lists;
+
             this.Add = new RelayCommand(() =>
             {
                 if (this.AddNewList)
                 {
-                    
                     var listDto = new TodoListDto()
                     {
                         Id = Guid.NewGuid().ToString(),
@@ -46,8 +46,6 @@ namespace MyChecklists.ViewModels
                 }
                 else
                 {
-                    
-
                     var itemDto = new TodoItemDto()
                     {
                         Checked = false,
