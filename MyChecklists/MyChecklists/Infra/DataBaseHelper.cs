@@ -8,7 +8,7 @@ using SQLite;
 
 namespace MyChecklists.Infra
 {
-    //This class for perform all database CRUD operations 
+    // This class for perform all database CRUD operations 
     public class DatabaseHelperClass
     {
         public bool CreateIfNotExists(string DB_PATH)
@@ -79,15 +79,10 @@ namespace MyChecklists.Infra
         {
             using (var db = new SQLiteConnection(DbConfig.DB_PATH))
             {
-                var existingconact = db.Query<TodoItemDto>("select * from TodoItemDto where Id ='" + item.Id + "'").FirstOrDefault();
-                if (existingconact != null)
+                db.RunInTransaction(() =>
                 {
-                    existingconact.Checked = item.Checked;
-                    db.RunInTransaction(() =>
-                    {
-                        db.Update(existingconact);
-                    });
-                }
+                    db.Execute(string.Format("update TodoItemDto set Checked={0} where Id='{1}'", item.Checked ? 1 : 0, item.Id));
+                });
             }
         }
 
@@ -95,14 +90,10 @@ namespace MyChecklists.Infra
         {
             using (var db = new SQLiteConnection(DbConfig.DB_PATH))
             {
-                var existingconact = db.Query<TodoItemDto>("select * from TodoItemDto where Id ='" + id + "'").FirstOrDefault();
-                if (existingconact != null)
+                db.RunInTransaction(() =>
                 {
-                    db.RunInTransaction(() =>
-                    {
-                        db.Delete(existingconact);
-                    });
-                }
+                    db.Execute(string.Format("delete from TodoItemDto where Id='{0}'", id));
+                });
             }
         }
 
@@ -110,14 +101,10 @@ namespace MyChecklists.Infra
         {
             using (var db = new SQLiteConnection(DbConfig.DB_PATH))
             {
-                var existingconact = db.Query<TodoListDto>("select * from TodoListDto where Id ='" + id + "'").FirstOrDefault();
-                if (existingconact != null)
+                db.RunInTransaction(() =>
                 {
-                    db.RunInTransaction(() =>
-                    {
-                        db.Delete(existingconact);
-                    });
-                }
+                    db.Execute(string.Format("delete from TodoListDto where Id='{0}'", id));
+                });
             }
         }
 
