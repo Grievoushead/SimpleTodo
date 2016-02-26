@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using MyChecklists.Common;
+using MyChecklists.Dtos;
+using MyChecklists.Infra;
 
 namespace MyChecklists.ViewModels
 {
     public class AddVM
     {
+        private DatabaseHelperClass db = new DatabaseHelperClass();
+
         private readonly ObservableCollection<TodoList> lists;
 
         private readonly TodoList currentList;
@@ -27,11 +31,37 @@ namespace MyChecklists.ViewModels
             {
                 if (this.AddNewList)
                 {
-                    this.lists.Add(new TodoList(this.Title, new List<TodoItem>()));
+                    
+                    var listDto = new TodoListDto()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Title = this.Title
+                    };
+
+                    var listModel = new TodoList(this.Title, new List<TodoItem>());
+                    listModel.Id = listDto.Id;
+
+                    db.InsertList(listDto);
+                    this.lists.Add(listModel);
                 }
                 else
                 {
-                    this.currentList.Todos.Add(new TodoItem(this.Title));
+                    
+
+                    var itemDto = new TodoItemDto()
+                    {
+                        Checked = false,
+                        Id = Guid.NewGuid().ToString(),
+                        Title = this.Title,
+                        TodoListId = currentList.Id
+                    };
+
+                    var itemModel = new TodoItem(this.Title, false, itemDto.Id);
+                    itemModel.Id = itemDto.Id;
+
+                    db.InsertItem(itemDto);
+
+                    this.currentList.Todos.Add(itemModel);
                 }
             });
         }

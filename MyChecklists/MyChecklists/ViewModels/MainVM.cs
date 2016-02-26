@@ -14,6 +14,8 @@ namespace MyChecklists.ViewModels
     {
         //private readonly INavService _NavService;
 
+        private DatabaseHelperClass db = new DatabaseHelperClass();
+
         public ObservableCollection<TodoList> Lists { get; private set; }
 
         public TodoList CurrentList { get; set; }
@@ -29,12 +31,22 @@ namespace MyChecklists.ViewModels
             /*_NavService = new NavService();
             _NavService.Register("Add", typeof(AddView));*/
 
-            this.Lists = new ObservableCollection<TodoList>()
+            var listsModel = new List<TodoList>();
+            var lists = db.GetLists();
+            foreach (var list in lists)
             {
+                var todos = db.GetTodos(list.Id);
+                var listModel = new TodoList(list.Title, todos.Select(x=>new TodoItem(x.Title, x.Checked, x.Id)));
+                listModel.Id = list.Id;
+                listsModel.Add(listModel);
+            }
+
+            this.Lists = new ObservableCollection<TodoList>(listsModel);
+            /*{
                 new TodoList("Home", new List<TodoItem> {new TodoItem("Buy milk"), new TodoItem("Clean"), new TodoItem("Wash")}),
                 new TodoList("Work", new List<TodoItem> {new TodoItem("Create presentation"), new TodoItem("Learn React"), new TodoItem("Write code")}),
                 new TodoList("Hobbies", new List<TodoItem> {new TodoItem("Start running"), new TodoItem("Go gym"), new TodoItem("Get hobbie")}),
-            };
+            };*/
 
             this.Clean = new RelayCommand(() =>
             {
@@ -56,6 +68,7 @@ namespace MyChecklists.ViewModels
 
             this.DeleteList = new RelayCommand(() =>
             {
+                db.DeleteList(this.CurrentList.Id);
                 this.Lists.Remove(this.CurrentList);
             });
         }

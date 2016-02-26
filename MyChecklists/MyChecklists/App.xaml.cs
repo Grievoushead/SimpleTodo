@@ -1,4 +1,6 @@
-﻿using MyChecklists.Common;
+﻿using System.Threading.Tasks;
+using Windows.Storage;
+using MyChecklists.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,9 +20,31 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону "Приложение с Pivot" см. по адресу http://go.microsoft.com/fwlink/?LinkID=391641
+using MyChecklists.Dtos;
+using SQLite;
 
 namespace MyChecklists
 {
+    public class Contacts
+    {
+        //The Id property is marked as the Primary Key
+        [SQLite.PrimaryKey, SQLite.AutoIncrement]
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+        public string CreationDate { get; set; }
+        public Contacts()
+        {
+            //empty constructor
+        }
+        public Contacts(string name, string phone_no)
+        {
+            Name = name;
+            PhoneNumber = phone_no;
+            CreationDate = DateTime.Now.ToString();
+        }
+    }
+
     /// <summary>
     /// Обеспечивает зависящее от конкретного приложения поведение, дополняющее класс Application по умолчанию.
     /// </summary>
@@ -28,12 +52,54 @@ namespace MyChecklists
     {
         private TransitionCollection transitions;
 
+        // DataBase Name 
+        public static string DB_PATH = Path.Combine(Path.Combine(ApplicationData.Current.LocalFolder.Path, "MyCheckliststest3.sqlite"));
+
+        private async Task<bool> CheckFileExists(string fileName)
+        {
+            try
+            {
+                var store = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
+                return true;
+            }
+            catch
+            {
+            }
+            return false;
+        }
+
         /// <summary>
         /// Инициализирует одноэлементный объект приложения. Это первая выполняемая строка разрабатываемого
         /// кода; поэтому она является логическим эквивалентом main() или WinMain().
         /// </summary>
         public App()
         {
+            if (!CheckFileExists("MyCheckliststest3.sqlite").Result)
+            {
+                using (var db = new SQLiteConnection(DB_PATH))
+                {
+                    db.CreateTable<TodoListDto>();
+                    db.CreateTable<TodoItemDto>();
+
+                    db.RunInTransaction(() =>
+                    {
+                        var listId = Guid.NewGuid().ToString();
+                        db.Insert(new TodoListDto()
+                        {
+                            Id = listId,
+                            Title = "test1",
+                            
+                        });
+
+                        db.Insert(new TodoItemDto() { Checked = true, Id = Guid.NewGuid().ToString(), Title = "todotest1", TodoListId = listId });
+                    });
+
+                    var all = db.Table<TodoListDto>().ToList<TodoListDto>();
+
+                    var allitems = db.Table<TodoItemDto>().ToList<TodoItemDto>();
+                }
+            }  
+
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
         }

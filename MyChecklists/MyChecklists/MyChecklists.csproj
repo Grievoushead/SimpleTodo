@@ -102,6 +102,10 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
+    <Compile Include="Dtos\Base.cs" />
+    <Compile Include="Dtos\TodoItem.cs" />
+    <Compile Include="Dtos\TodoList.cs" />
+    <Compile Include="Infra\DataBaseHelper.cs" />
     <Compile Include="Infra\NavService.cs" />
     <Compile Include="ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>
@@ -110,6 +114,8 @@
       <DependentUpon>PivotPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLite.cs" />
+    <Compile Include="SQLiteAsync.cs" />
     <Compile Include="ViewModels\AddVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="ViewModels\TodoItem.cs" />
@@ -144,8 +150,17 @@
       <SubType>Designer</SubType>
     </PRIResource>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Dtos\" />
+    <SDKReference Include="Microsoft.VCLibs, Version=12.0">
+      <Name>Microsoft Visual C++ 2013 Runtime Package for Windows Phone</Name>
+    </SDKReference>
+    <SDKReference Include="SQLite.WP81, Version=3.11.0">
+      <Name>SQLite for Windows Phone 8.1</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
