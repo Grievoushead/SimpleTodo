@@ -42,12 +42,12 @@ namespace MyChecklists.Infra
             return result;
         }
 
-        public List<TodoItemDto> GetTodos(string id)
+        public List<TodoItemDto> GetTodos()
         {
             var result = new List<TodoItemDto>();
             using (var db = new SQLiteConnection(DbConfig.DB_PATH))
             {
-                result = db.Table<TodoItemDto>().Where(x => x.TodoListId == id).ToList<TodoItemDto>();
+                result = db.Table<TodoItemDto>()/*.Where(x => x.TodoListId == id)*/.ToList<TodoItemDto>();
             }
 
             return result;

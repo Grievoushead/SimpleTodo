@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using MyChecklists.Common;
+using MyChecklists.Dtos;
 using MyChecklists.Infra;
 using MyChecklists.Views;
 
@@ -24,18 +25,30 @@ namespace MyChecklists.ViewModels
 
         public MainVM()
         {
-            var listsModel = new List<TodoListVM>();
+            // get all lists and todos from db
             var lists = db.GetLists();
+            var todos = db.GetTodos();
+
+            // map onto viewmodels
+            var listsModel = new List<TodoListVM>();
+
             foreach (var list in lists)
             {
-                var todos = db.GetTodos(list.Id);
-                var listModel = new TodoListVM(list.Title, todos.Select(x=>new TodoItemVM(x.Title, x.Checked, x.Id)));
+                TodoListDto curList = list;
+                var curTodos = todos.Where(x => x.TodoListId == curList.Id).ToList();
+
+                var listModel = new TodoListVM(
+                    string.Format("{0} - {1}/{2}", list.Title, curTodos.Count, curTodos.Count(x => x.Checked)),
+                         curTodos.Select(x => new TodoItemVM(x.Title, x.Checked, x.Id))
+                    );
+
                 listModel.Id = list.Id;
                 listsModel.Add(listModel);
             }
 
             this.Lists = new ObservableCollection<TodoListVM>(listsModel);
 
+            // actions
             this.Clean = new RelayCommand(() =>
             {
                 // do clean in current list
