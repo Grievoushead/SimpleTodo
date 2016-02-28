@@ -102,7 +102,9 @@
     <Compile Include="Dtos\TodoListDto.cs" />
     <Compile Include="Infra\DataBaseHelper.cs" />
     <Compile Include="Infra\NavService.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="StartUp\DbConfig.cs" />
+    <Compile Include="ViewModels\BaseVM.cs" />
     <Compile Include="Views\PivotPage.xaml.cs">
       <DependentUpon>PivotPage.xaml</DependentUpon>
     </Compile>

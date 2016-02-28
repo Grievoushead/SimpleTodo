@@ -36,7 +36,10 @@
         </DataTemplate>
 
         <DataTemplate x:Key="HeaderTemplate">
-            <ContentControl Content="{Binding Title}" />
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding Title}"></TextBlock>
+                <TextBlock Text="{Binding SecondaryTitle}" FontSize="26"></TextBlock>
+            </StackPanel>
         </DataTemplate>
 
     </Page.Resources>

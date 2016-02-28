@@ -38,8 +38,8 @@ namespace MyChecklists.ViewModels
                 var curTodos = todos.Where(x => x.TodoListId == curList.Id).ToList();
 
                 var listModel = new TodoListVM(
-                    string.Format("{0} - {1}/{2}", list.Title, curTodos.Count, curTodos.Count(x => x.Checked)),
-                         curTodos.Select(x => new TodoItemVM(x.Title, x.Checked, x.Id))
+                        list.Title,
+                        curTodos.Select(x => new TodoItemVM(x.Title, x.Checked, x.Id))
                     );
 
                 listModel.Id = list.Id;

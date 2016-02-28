@@ -17,6 +17,8 @@ namespace MyChecklists.ViewModels
 
         public RelayCommand Toggle { get; private set; }
 
+        public event Action Toggled;
+
         public TodoItemVM(String title, Boolean check, String id)
         {
             this.Id = id;
@@ -30,6 +32,11 @@ namespace MyChecklists.ViewModels
                     Id = this.Id,
                     Checked = this.Checked
                 });
+
+                if (Toggled != null)
+                {
+                    Toggled();
+                }
             });
         }
     }

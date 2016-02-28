@@ -59,7 +59,7 @@ namespace MyChecklists.ViewModels
 
                     db.InsertItem(itemDto);
 
-                    this.currentList.Todos.Add(itemModel);
+                    this.currentList.AddTodo(itemModel);
                 }
             });
         }
