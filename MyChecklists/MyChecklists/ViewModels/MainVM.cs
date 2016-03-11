@@ -40,6 +40,7 @@ namespace MyChecklists.ViewModels
                 var listModel = new TodoListVM(
                         list.Title,
                         curTodos.Select(x => new TodoItemVM(x.Title, x.Checked, x.Id))
+                                .OrderBy(x => x.Checked)
                     );
 
                 listModel.Id = list.Id;

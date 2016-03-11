@@ -17,7 +17,7 @@ namespace MyChecklists.ViewModels
 
         public RelayCommand Toggle { get; private set; }
 
-        public event Action Toggled;
+        public event Action<string> Toggled;
 
         public TodoItemVM(String title, Boolean check, String id)
         {
@@ -35,7 +35,7 @@ namespace MyChecklists.ViewModels
 
                 if (Toggled != null)
                 {
-                    Toggled();
+                    Toggled(this.Id);
                 }
             });
         }
